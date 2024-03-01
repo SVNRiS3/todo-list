@@ -1,5 +1,5 @@
 export default class Task {
-  #createDate = new Date();
+  #creationDate = new Date();
   #isCompleted = false;
   priority;
   dueDate;
@@ -12,10 +12,10 @@ export default class Task {
   }
 
   triggerCompletion() {
-    this.isCompleted = this.isCompleted ? true : false;
+    this.#isCompleted = !this.#isCompleted;
   }
 
-  get createDate() {
-    return this.createDate;
+  getCreationDate() {
+    return this.#creationDate;
   }
 }
