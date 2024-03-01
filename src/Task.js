@@ -1,6 +1,7 @@
 export default class Task {
   #creationDate = new Date();
   #isCompleted = false;
+  location;
   priority;
   dueDate;
   description;
