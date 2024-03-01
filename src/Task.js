@@ -1,4 +1,5 @@
 export default class Task {
+  id;
   #creationDate = new Date();
   #isCompleted = false;
   location;
