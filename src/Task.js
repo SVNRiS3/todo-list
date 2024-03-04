@@ -4,7 +4,7 @@ export default class Task {
   #id = Date.now();
   #creationDate = format(new Date(), 'dd/MM/yyyy');
   #isCompleted = false;
-  priority;
+  #priority;
   dueDate = null;
   description;
   tags = [];
@@ -35,7 +35,11 @@ export default class Task {
   }
 
   setPriority(priority) {
-    if (priority >= 0 && priority <= 2) this.priority = priority;
+    if (priority >= 0 && priority <= 2) this.#priority = priority;
+  }
+
+  getPriority() {
+    return this.#priority;
   }
 
   addTag(tag) {

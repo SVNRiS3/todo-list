@@ -14,10 +14,12 @@ export default class Project {
         b.dueDate || b.getCreationDate()
       )
     );
+    this.taskList.sort((a, b) => a.getPriority() - b.getPriority());
   }
 
   addTask(task, mainProject = null) {
     this.taskList.push(task);
+    this.sortTasks();
     if (mainProject) {
       mainProject.taskList.push(task);
       mainProject.sortTasks();
