@@ -1,5 +1,4 @@
 import { compareAsc } from 'date-fns';
-import { getProjectById } from './projectHandler';
 
 export default class Project {
   #id = Date.now();
@@ -38,12 +37,5 @@ export default class Project {
     this.taskList = this.taskList.filter(
       (task) => task.getId() !== taskToRemove.getId()
     );
-  }
-
-  moveTask(taskToMoveId, projectToMoveId) {
-    const taskToMove = this.getTaskById(taskToMoveId);
-    const projectToMove = getProjectById(projectToMoveId);
-    projectToMove.addTask(taskToMove);
-    this.removeTask(taskToMove);
   }
 }

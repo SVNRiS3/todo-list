@@ -1,1 +1,3 @@
-export default class Render {}
+export default class Render {
+  static projectsMenu(projectNameList) {}
+}

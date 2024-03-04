@@ -1,6 +1,13 @@
 import Project from './Project';
 
 export default class taskHandler {
+  static moveTask(projectToMoveFromId, taskToMoveId, projectToMoveToId) {
+    const projectToMoveFrom = getProjectById(projectToMoveFromId);
+    const taskToMove = projectToMoveFrom.getTaskById(taskToMoveId);
+    const projectToMoveTo = getProjectById(projectToMoveToId);
+    projectToMoveTo.addTask(taskToMove);
+    projectToMoveFrom.removeTask(taskToMove);
+  }
   mainProject = new Project('Main');
   projectList = [mainProject];
 
