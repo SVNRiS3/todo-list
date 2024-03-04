@@ -12,9 +12,15 @@ export default class taskHandler {
     this.projectList.push(projectToAdd);
   }
 
-  removeProject(projectName) {
+  removeProject(projectToRemoveId) {
     this.projectList = this.projectList.filter(
-      (task) => task.getId() !== taskToRemove.getId()
+      (project) => project.getId() !== projectToRemoveId
     );
+  }
+
+  getProjectById(projectId) {
+    return this.projectList.filter(
+      (project) => project.getId() === projectId
+    )[0];
   }
 }
