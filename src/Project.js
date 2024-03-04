@@ -1,5 +1,5 @@
 import { compareAsc } from 'date-fns';
-
+import Task from './Task';
 export default class Project {
   #id = Date.now();
   taskList = [];
