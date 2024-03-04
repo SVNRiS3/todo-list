@@ -3,3 +3,5 @@ import Project from './Project';
 
 const mainProject = new Project('All tasks');
 const projectList = [mainProject];
+
+export default projectList;
