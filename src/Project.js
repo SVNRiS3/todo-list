@@ -17,25 +17,14 @@ export default class Project {
     this.taskList.sort((a, b) => a.getPriority() - b.getPriority());
   }
 
-  addTask(task, mainProject = null) {
+  addTask(task) {
     this.taskList.push(task);
     this.sortTasks();
-    if (mainProject) {
-      mainProject.taskList.push(task);
-      mainProject.sortTasks();
-    }
   }
 
-  removeTask(taskToRemove, projectList = null) {
-    projectList
-      ? projectList.map((project) => {
-          project.taskList = project.taskList.filter(
-            (task) => task.getId() !== taskToRemove.getId()
-          );
-          return project;
-        })
-      : (this.taskList = this.taskList.filter(
-          (task) => task.getId() !== taskToRemove.getId()
-        ));
+  removeTask(taskToRemove) {
+    this.taskList = this.taskList.filter(
+      (task) => task.getId() !== taskToRemove.getId()
+    );
   }
 }
