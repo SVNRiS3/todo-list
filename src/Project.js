@@ -2,18 +2,9 @@ import { compareAsc } from 'date-fns';
 
 export default class Project {
   taskList = [];
+
   constructor(title) {
     this.title = title;
-  }
-
-  addTask(task) {
-    this.taskList.push(task);
-  }
-
-  removeTask(taskToRemoveId) {
-    this.taskList = this.taskList.filter(
-      (task) => task.getId() !== taskToRemoveId
-    );
   }
 
   sortTasks() {
@@ -23,5 +14,26 @@ export default class Project {
         b.dueDate || b.getCreationDate()
       )
     );
+  }
+
+  addTask(task, mainProject = null) {
+    this.taskList.push(task);
+    if (mainProject) {
+      mainProject.taskList.push(task);
+      mainProject.sortTasks();
+    }
+  }
+
+  removeTask(taskToRemove, projectList = null) {
+    projectList
+      ? projectList.map((project) => {
+          project.taskList = project.taskList.filter(
+            (task) => task.getId() !== taskToRemove.getId()
+          );
+          return project;
+        })
+      : (this.taskList = this.taskList.filter(
+          (task) => task.getId() !== taskToRemove.getId()
+        ));
   }
 }
