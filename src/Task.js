@@ -5,7 +5,7 @@ export default class Task {
   #creationDate = format(new Date(), 'dd/MM/yyyy');
   #isCompleted = false;
   priority;
-  dueDate;
+  dueDate = null;
   description;
   tags = [];
   notes;
@@ -28,6 +28,10 @@ export default class Task {
 
   setDueDate(date) {
     this.dueDate = format(date, 'dd/MM/yyyy');
+  }
+
+  removeDueDate() {
+    this.dueDate = null;
   }
 
   setPriority(priority) {
