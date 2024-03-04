@@ -1,16 +1,21 @@
+import { format } from 'date-fns';
+
 export default class Task {
-  id;
-  #creationDate = new Date();
+  #id = Date.now();
+  #creationDate = format(new Date(), 'dd/MM/yyyy');
   #isCompleted = false;
-  location;
   priority;
   dueDate;
   description;
-  tags;
+  tags = [];
   notes;
 
   constructor(title) {
     this.title = title;
+  }
+
+  getId() {
+    return this.#id;
   }
 
   triggerCompletion() {
@@ -19,5 +24,21 @@ export default class Task {
 
   getCreationDate() {
     return this.#creationDate;
+  }
+
+  setDueDate(date) {
+    this.dueDate = format(date, 'dd/MM/yyyy');
+  }
+
+  setPriority(priority) {
+    if (priority >= 0 && priority <= 2) this.priority = priority;
+  }
+
+  addTag(tag) {
+    this.tags.push(tag);
+  }
+
+  removeTag(tag) {
+    this.tags = this.tags.filter((tagsTag) => tagsTag !== tag);
   }
 }

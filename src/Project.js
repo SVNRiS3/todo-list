@@ -10,8 +10,10 @@ export default class Project {
     this.taskList.push(task);
   }
 
-  removeTask(taskToRemove) {
-    this.taskList = this.taskList.filter((task) => task.id === taskToRemove.id);
+  removeTask(taskToRemoveId) {
+    this.taskList = this.taskList.filter(
+      (task) => task.getId() !== taskToRemoveId
+    );
   }
 
   sortTasks() {
