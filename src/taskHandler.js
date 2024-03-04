@@ -1,7 +1,16 @@
 import Task from './Task';
 import Project from './Project';
 
-const mainProject = new Project('All tasks');
-const projectList = [mainProject];
+export default class taskHandler {
+  mainProject = new Project('Main');
+  projectList = [mainProject];
 
-export default projectList;
+  constructor() {
+    //todo
+  }
+
+  addProject(name) {
+    const projectToAdd = new Project(name);
+    this.projectList.push(projectToAdd);
+  }
+}

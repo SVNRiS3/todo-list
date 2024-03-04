@@ -17,8 +17,9 @@ export default class Project {
     this.taskList.sort((a, b) => a.getPriority() - b.getPriority());
   }
 
-  addTask(task) {
-    this.taskList.push(task);
+  addTask(taskName) {
+    const newTask = new Task(taskName);
+    this.taskList.push(newTask);
     this.sortTasks();
   }
 
@@ -26,5 +27,10 @@ export default class Project {
     this.taskList = this.taskList.filter(
       (task) => task.getId() !== taskToRemove.getId()
     );
+  }
+
+  moveTask(taskToMove, projectToMove) {
+    projectToMove.addTask(taskToMove);
+    this.removeTask(taskToMove);
   }
 }
