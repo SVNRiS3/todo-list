@@ -10,7 +10,7 @@ export default class ProjectHandler {
   }
 
   mainProject = new Project('Main');
-  projectList = [mainProject];
+  projectList = [this.mainProject];
 
   addProject(projectName) {
     if (this.projectList.map((project) => project.title).includes(projectName))
