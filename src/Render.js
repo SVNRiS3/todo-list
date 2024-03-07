@@ -23,18 +23,23 @@ export default class Render {
   }
 
   renderButtonList(list, type) {
-    const wrapper = this.create('div', `${type}-wrapper`);
+    const listWrapper = this.create('div', `${type}-list-wrapper`);
     const addNewButton = this.create(
       'button',
       `${type}-new`,
       `Add new ${type}`
     );
     list.forEach((item) => {
-      let button = this.create('button', type, item.title, item.getId());
-      wrapper.appendChild(button);
+      let itemId = item.getId();
+      let elWrapper = this.create('div', `${type}-el-wrapper`, '', itemId);
+      let button = this.create('button', type, item.title, itemId);
+      let deleteItemEl = this.create('button', `${type}-delete`, 'X', itemId);
+      elWrapper.appendChild(button);
+      elWrapper.appendChild(deleteItemEl);
+      listWrapper.appendChild(elWrapper);
     });
-    wrapper.appendChild(addNewButton);
-    this.appEl.appendChild(wrapper);
+    listWrapper.appendChild(addNewButton);
+    this.appEl.appendChild(listWrapper);
   }
 
   renderTestList() {
