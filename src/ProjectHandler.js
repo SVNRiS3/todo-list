@@ -11,6 +11,12 @@ export default class ProjectHandler {
 
   mainProject = new Project('Main');
   projectList = [this.mainProject];
+  //add example tasks
+  createTestTasks() {
+    this.projectList[0].addTask('example task 1');
+    this.projectList[0].addTask('example task 2');
+    this.projectList[0].addTask('example task 3');
+  }
 
   addProject(projectName) {
     if (this.projectList.map((project) => project.title).includes(projectName))
