@@ -12,10 +12,16 @@ export default class ProjectHandler {
   mainProject = new Project('Main');
   projectList = [this.mainProject];
   //add example tasks
-  createTestTasks() {
-    this.projectList[0].addTask('example task 1');
-    this.projectList[0].addTask('example task 2');
-    this.projectList[0].addTask('example task 3');
+  createTestTasks(projectPosition) {
+    this.projectList[projectPosition].addTask(
+      `example task ${projectPosition * 3 + 1}`
+    );
+    this.projectList[projectPosition].addTask(
+      `example task ${projectPosition * 3 + 2}`
+    );
+    this.projectList[projectPosition].addTask(
+      `example task ${projectPosition * 3 + 3}`
+    );
   }
 
   addProject(projectName) {

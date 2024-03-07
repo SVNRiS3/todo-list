@@ -2,7 +2,9 @@ import ProjectHandler from './ProjectHandler';
 
 const project = new ProjectHandler();
 
-project.createTestTasks();
+project.addProject('test project');
+project.createTestTasks(0);
+project.createTestTasks(1);
 const projects = project.projectList;
 
 export default class Render {
@@ -30,6 +32,7 @@ export default class Render {
 
   renderTestList() {
     project.projectList[0].taskList.forEach((task) => console.log(task.title));
+    project.projectList[1].taskList.forEach((task) => console.log(task.title));
   }
 
   init() {
