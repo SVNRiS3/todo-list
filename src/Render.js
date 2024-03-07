@@ -14,9 +14,10 @@ export default class Render {
     document.body.appendChild(this.appEl);
   }
 
-  create(element, className = '', data = '') {
+  create(element, className = '', text = '', data = '') {
     const el = document.createElement(element);
     className && el.classList.add(className);
+    text && (el.textContent = text);
     data && el.setAttribute('data-id', data);
     return el;
   }
@@ -24,7 +25,7 @@ export default class Render {
   renderButtonList(list, type) {
     const wrapper = this.create('div', `${type}-wrapper`);
     list.forEach((item) => {
-      let button = this.create('button', type, item.getId());
+      let button = this.create('button', type, item.title, item.getId());
       wrapper.appendChild(button);
     });
     this.appEl.appendChild(wrapper);
