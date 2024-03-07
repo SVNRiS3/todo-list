@@ -24,10 +24,16 @@ export default class Render {
 
   renderButtonList(list, type) {
     const wrapper = this.create('div', `${type}-wrapper`);
+    const addNewButton = this.create(
+      'button',
+      `${type}-new`,
+      `Add new ${type}`
+    );
     list.forEach((item) => {
       let button = this.create('button', type, item.title, item.getId());
       wrapper.appendChild(button);
     });
+    wrapper.appendChild(addNewButton);
     this.appEl.appendChild(wrapper);
   }
 
