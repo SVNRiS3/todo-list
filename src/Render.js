@@ -22,6 +22,13 @@ export default class Render {
     return el;
   }
 
+  addProjectListener(element, item) {
+    //if item class === project do sth, if class === task, do sth else
+    element.addEventListener('click', () => {
+      console.log(item);
+    });
+  }
+
   renderButtonList(list, type) {
     const listWrapper =
       document.querySelector(`.${type}-list-wrapper`) ||
@@ -36,6 +43,7 @@ export default class Render {
       let itemId = item.getId();
       let elWrapper = this.create('div', `${type}-el-wrapper`, '', itemId);
       let button = this.create('button', type, item.title, itemId);
+      this.addProjectListener(button, item);
       let deleteItemEl = this.create('button', `${type}-delete`, 'X', itemId);
       elWrapper.appendChild(button);
       elWrapper.appendChild(deleteItemEl);
@@ -51,7 +59,7 @@ export default class Render {
   }
 
   init() {
-    this.renderButtonList(projects, 'project');
+    const renderProjects = this.renderButtonList(projects, 'project');
     this.renderTestList();
   }
 }
