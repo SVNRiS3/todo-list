@@ -23,7 +23,10 @@ export default class Render {
   }
 
   renderButtonList(list, type) {
-    const listWrapper = this.create('div', `${type}-list-wrapper`);
+    const listWrapper =
+      document.querySelector(`.${type}-list-wrapper`) ||
+      this.create('div', `${type}-list-wrapper`);
+    listWrapper.innerHTML = '';
     const addNewButton = this.create(
       'button',
       `${type}-new`,
