@@ -22,8 +22,8 @@ export default class Render {
     return el;
   }
 
-  renderProjectTasks() {
-    console.log('tasks');
+  renderProjectTasks(item) {
+    this.renderButtonList(item.taskList, 'task');
   }
 
   renderTaskEdit() {
@@ -31,10 +31,23 @@ export default class Render {
   }
 
   addProjectListener(element, item) {
-    //if item class === project do sth, if class === task, do sth else
     element.addEventListener('click', () => {
-      if (item.taskList) this.renderProjectTasks(item);
+      element.classList.add(`${item.type}-active`);
+      if (item.type === 'project') this.renderProjectTasks(item);
       else this.renderTaskEdit(item);
+    });
+  }
+
+  addRemoveElementListener(item, button) {
+    button.addEventListener('click', () => {
+      document
+        .querySelectorAll(`[data-id="${button.dataset.id}"]`)
+        .forEach((el) => (el.innerHTML = ''));
+      if (item.type === 'task') {
+        //do sth
+      } else if (item.type === 'project') {
+        //do sth else
+      }
     });
   }
 
@@ -53,9 +66,10 @@ export default class Render {
       let elWrapper = this.create('div', `${type}-el-wrapper`, '', itemId);
       let button = this.create('button', type, item.title, itemId);
       this.addProjectListener(button, item);
-      let deleteItemEl = this.create('button', `${type}-delete`, 'X', itemId);
+      let removeItemEl = this.create('button', `${type}-remove`, 'X', itemId);
+      addRemoveElementListener(item, removeItemEl);
       elWrapper.appendChild(button);
-      elWrapper.appendChild(deleteItemEl);
+      elWrapper.appendChild(removeItemEl);
       listWrapper.appendChild(elWrapper);
     });
     listWrapper.appendChild(addNewButton);
@@ -68,7 +82,8 @@ export default class Render {
   }
 
   init() {
-    const renderProjects = this.renderButtonList(projects, 'project');
+    this.renderButtonList(projects, 'project');
+    this.renderButtonList(projects[0].taskList, 'task');
     this.renderTestList();
   }
 }

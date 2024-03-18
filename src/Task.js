@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 export default class Task {
-  #id = Date.now();
+  #id = Math.floor(Date.now() * (Math.random() + 1));
   #creationDate = format(new Date(), 'dd/MM/yyyy');
   #isCompleted = false;
   #priority;
@@ -9,6 +9,7 @@ export default class Task {
   description;
   tags = [];
   notes;
+  type = 'task';
 
   constructor(title) {
     this.title = title;

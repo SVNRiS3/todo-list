@@ -1,8 +1,9 @@
 import { compareAsc } from 'date-fns';
 import Task from './Task';
 export default class Project {
-  #id = Date.now();
+  #id = Math.floor(Date.now() * (Math.random() + 1));
   taskList = [];
+  type = 'project';
 
   constructor(title) {
     this.title = title;
