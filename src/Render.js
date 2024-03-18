@@ -22,10 +22,19 @@ export default class Render {
     return el;
   }
 
+  renderProjectTasks() {
+    console.log('tasks');
+  }
+
+  renderTaskEdit() {
+    console.log('edit task');
+  }
+
   addProjectListener(element, item) {
     //if item class === project do sth, if class === task, do sth else
     element.addEventListener('click', () => {
-      console.log(item);
+      if (item.taskList) this.renderProjectTasks(item);
+      else this.renderTaskEdit(item);
     });
   }
 
