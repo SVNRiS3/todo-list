@@ -30,6 +30,7 @@ export default class Render {
   }
 
   renderTaskEdit() {
+    //TODO
     console.log('edit task');
   }
 
@@ -77,7 +78,6 @@ export default class Render {
       if (projects.length > 0) {
         this.renderButtonList(projects[0].taskList);
       } else {
-        this.projectEl.innerHTML = '';
         this.taskEl.innerHTML = '';
       }
     });
@@ -107,7 +107,10 @@ export default class Render {
   }
 
   renderButtonList(list) {
-    const listType = list.length > 0 ? list[0].type : 'task';
+    let listType = '';
+    if (list.length > 0) listType = list[0].type;
+    else if (projects.length === 0) listType = 'project';
+    else listType = 'task';
     const listWrapper = listType === 'project' ? this.projectEl : this.taskEl;
     listWrapper.innerHTML = '';
     const addNewButton = this.create(
