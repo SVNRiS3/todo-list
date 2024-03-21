@@ -9,9 +9,12 @@ let projects = project.projectList;
 
 export default class Render {
   constructor() {
-    this.appEl = this.create('div');
-    this.appEl.classList.add('app');
+    this.appEl = this.create('div', 'app');
+    this.projectEl = this.create('div', 'project-list');
+    this.taskEl = this.create('div', 'task-list');
     document.body.appendChild(this.appEl);
+    document.body.appendChild(this.projectEl);
+    document.body.appendChild(this.taskEl);
   }
 
   create(element, className = '', text = '', data = '') {
@@ -71,7 +74,12 @@ export default class Render {
         );
       }
       this.renderButtonList(projects);
-      this.renderButtonList(projects[0].taskList);
+      if (projects.length > 0) {
+        this.renderButtonList(projects[0].taskList);
+      } else {
+        this.projectEl.innerHTML = '';
+        this.taskEl.innerHTML = '';
+      }
     });
   }
 
@@ -100,9 +108,7 @@ export default class Render {
 
   renderButtonList(list) {
     const listType = list.length > 0 ? list[0].type : 'task';
-    const listWrapper =
-      document.querySelector(`.${listType}-list-wrapper`) ||
-      this.create('div', `${listType}-list-wrapper`);
+    const listWrapper = listType === 'project' ? this.projectEl : this.taskEl;
     listWrapper.innerHTML = '';
     const addNewButton = this.create(
       'button',
@@ -127,7 +133,6 @@ export default class Render {
       listWrapper.appendChild(elWrapper);
     });
     listWrapper.appendChild(addNewButton);
-    this.appEl.appendChild(listWrapper);
     this.setDefaultActiveProject();
   }
 
