@@ -5,7 +5,7 @@ const project = new ProjectHandler();
 project.addProject('test project');
 project.createTestTasks(0);
 project.createTestTasks(1);
-const projects = project.projectList;
+let projects = project.projectList;
 
 export default class Render {
   constructor() {
@@ -38,36 +38,62 @@ export default class Render {
     });
   }
 
-  addRemoveElementListener(item, button) {
+  addRemoveElementListener(list, button) {
+    const elementId = +button.dataset.id;
     button.addEventListener('click', () => {
-      document
-        .querySelectorAll(`[data-id="${button.dataset.id}"]`)
-        .forEach((el) => (el.innerHTML = ''));
-      if (item.type === 'task') {
-        //do sth
-      } else if (item.type === 'project') {
-        //do sth else
+      const connectedElements = document.querySelectorAll(
+        `[data-id="${elementId}"]`
+      );
+      connectedElements.forEach((el) => (el.innerHTML = ''));
+      if (list[0].type === 'project')
+        projects = [
+          ...projects.filter(
+            (projectItem) => projectItem.getId() !== elementId
+          ),
+        ];
+      else if (list[0].type === 'task') {
+        projects = projects.map((project) => {
+          project.taskList = project.taskList.filter(
+            (task) => task.getId() !== elementId
+          );
+          return project;
+        });
       }
     });
   }
 
-  renderButtonList(list, type) {
+  renderButtonList(list) {
     const listWrapper =
-      document.querySelector(`.${type}-list-wrapper`) ||
-      this.create('div', `${type}-list-wrapper`);
+      document.querySelector(`.${list[0].type || 'default'}-list-wrapper`) ||
+      this.create('div', `${list[0].type || 'default'}-list-wrapper`);
     listWrapper.innerHTML = '';
     const addNewButton = this.create(
       'button',
-      `${type}-new`,
-      `Add new ${type}`
+      `${list[0].type || 'default'}-new`,
+      `Add new ${list[0].type || 'default'}`
     );
     list.forEach((item) => {
       let itemId = item.getId();
-      let elWrapper = this.create('div', `${type}-el-wrapper`, '', itemId);
-      let button = this.create('button', type, item.title, itemId);
+      let elWrapper = this.create(
+        'div',
+        `${list[0].type || 'default'}-el-wrapper`,
+        '',
+        itemId
+      );
+      let button = this.create(
+        'button',
+        list[0].type || 'default',
+        item.title,
+        itemId
+      );
       this.addProjectListener(button, item);
-      let removeItemEl = this.create('button', `${type}-remove`, 'X', itemId);
-      addRemoveElementListener(item, removeItemEl);
+      let removeItemEl = this.create(
+        'button',
+        `${list[0].type || 'default'}-remove`,
+        'X',
+        itemId
+      );
+      this.addRemoveElementListener(list, removeItemEl);
       elWrapper.appendChild(button);
       elWrapper.appendChild(removeItemEl);
       listWrapper.appendChild(elWrapper);
@@ -82,8 +108,8 @@ export default class Render {
   }
 
   init() {
-    this.renderButtonList(projects, 'project');
-    this.renderButtonList(projects[0].taskList, 'task');
+    this.renderButtonList(projects);
+    this.renderButtonList(projects[0].taskList);
     this.renderTestList();
   }
 }
