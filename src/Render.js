@@ -1,5 +1,5 @@
 import ProjectHandler from './ProjectHandler';
-
+//TODO: active class disappears after adding/removing project (so on render), add state elsewhere
 const project = new ProjectHandler();
 
 project.addProject('test project');
@@ -12,6 +12,9 @@ export default class Render {
     this.appEl = this.create('div', 'app');
     this.projectEl = this.create('div', 'project-list');
     this.taskEl = this.create('div', 'task-list');
+    this.projectName = this.create('h1');
+
+    document.body.appendChild(this.projectName);
     document.body.appendChild(this.appEl);
     document.body.appendChild(this.projectEl);
     document.body.appendChild(this.taskEl);
@@ -34,11 +37,15 @@ export default class Render {
     console.log('edit task');
   }
 
+  removeActiveClass(type) {
+    document
+      .querySelectorAll(`.${type}-active`)
+      .forEach((el) => el.classList.remove(`${type}-active`));
+  }
+
   addProjectListener(element, item) {
     element.addEventListener('click', () => {
-      document
-        .querySelectorAll(`.${item.type}-active`)
-        .forEach((el) => el.classList.remove(`${item.type}-active`));
+      this.removeActiveClass(item.type);
       element.classList.add(`${item.type}-active`);
       if (item.type === 'project') this.renderProjectTasks(item);
       else this.renderTaskEdit(item);
@@ -46,11 +53,13 @@ export default class Render {
   }
 
   setDefaultActiveProject() {
-    const activeProjects = document.querySelectorAll('.project-active');
+    let activeProjects = document.querySelectorAll('.project-active');
     const renderedProjects = document.querySelectorAll('.project');
     if (activeProjects.length === 0 && renderedProjects.length > 0) {
       renderedProjects[0].classList.add('project-active');
     }
+    activeProjects = document.querySelectorAll('.project-active');
+    this.projectName.textContent = activeProjects[0].textContent;
   }
 
   addRemoveElementListener(type, button) {
@@ -139,14 +148,8 @@ export default class Render {
     this.setDefaultActiveProject();
   }
 
-  renderTestList() {
-    project.projectList[0].taskList.forEach((task) => console.log(task.title));
-    project.projectList[1].taskList.forEach((task) => console.log(task.title));
-  }
-
   init() {
     this.renderButtonList(projects);
     this.renderButtonList(projects[0].taskList);
-    this.renderTestList();
   }
 }
