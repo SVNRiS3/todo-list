@@ -41,32 +41,65 @@ export default class Render {
     });
   }
 
+  setDefaultActiveProject() {
+    const activeProjects = document.querySelectorAll('.project-active');
+    const renderedProjects = document.querySelectorAll('.project');
+    if (activeProjects.length === 0 && renderedProjects.length > 0) {
+      renderedProjects[0].classList.add('project-active');
+    }
+  }
+
   addRemoveElementListener(type, button) {
-    const elementId = +button.dataset.id;
     button.addEventListener('click', () => {
-      const connectedElements = document.querySelectorAll(
-        `[data-id="${elementId}"]`
-      );
-      connectedElements.forEach((el) => (el.innerHTML = ''));
+      const elementId = +button.dataset.id;
       if (type === 'project')
-        projects = [
-          ...projects.filter(
-            (projectItem) => projectItem.getId() !== elementId
-          ),
-        ];
+        projects.splice(
+          0,
+          projects.length,
+          ...projects.filter((projectItem) => projectItem.getId() !== elementId)
+        );
       else if (type === 'task') {
-        projects = projects.map((project) => {
-          project.taskList = project.taskList.filter(
-            (task) => task.getId() !== elementId
-          );
-          return project;
-        });
+        projects.splice(
+          0,
+          projects.length,
+          ...projects.map((project) => {
+            project.taskList = project.taskList.filter(
+              (task) => task.getId() !== elementId
+            );
+            return project;
+          })
+        );
+      }
+      this.renderButtonList(projects);
+      this.renderButtonList(projects[0].taskList);
+    });
+  }
+
+  addAddElementListener(button, type) {
+    button.addEventListener('click', () => {
+      let title = '';
+      while (title === '') {
+        title = prompt(
+          `${type[0].toUpperCase() + type.slice(1, type.length)} name: `
+        );
+      }
+      if (type === 'project') {
+        project.addProject(title);
+        this.renderButtonList(projects);
+      } else if (type === 'task') {
+        const activeProjectId =
+          +document.querySelector('.project-active').dataset.id;
+        const activeProject = projects.filter(
+          (project) => project.getId() === activeProjectId
+        )[0];
+        activeProject.addTask(title);
+        this.renderButtonList(activeProject.taskList);
       }
     });
   }
 
   renderButtonList(list) {
-    const listType = list[0].type || 'default';
+    const listType = list.length > 0 ? list[0].type : 'task';
     const listWrapper =
       document.querySelector(`.${listType}-list-wrapper`) ||
       this.create('div', `${listType}-list-wrapper`);
@@ -76,7 +109,7 @@ export default class Render {
       `${listType}-new`,
       `Add new ${listType}`
     );
-    // this.addAddElementListener(listType);
+    this.addAddElementListener(addNewButton, listType);
     list.forEach((item) => {
       let itemId = item.getId();
       let elWrapper = this.create('div', `${listType}-el-wrapper`, '', itemId);
@@ -95,6 +128,7 @@ export default class Render {
     });
     listWrapper.appendChild(addNewButton);
     this.appEl.appendChild(listWrapper);
+    this.setDefaultActiveProject();
   }
 
   renderTestList() {
