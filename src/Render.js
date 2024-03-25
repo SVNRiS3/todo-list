@@ -43,7 +43,7 @@ export default class Render {
     if (type === 'project') projects.forEach((project) => (project.active = 0));
     else if (type === 'task')
       projects.forEach((project) =>
-        project.forEach((task) => (task.active = 0))
+        project.taskList.forEach((task) => (task.active = 0))
       );
   }
 
@@ -111,6 +111,7 @@ export default class Render {
           `${type[0].toUpperCase() + type.slice(1, type.length)} name: `
         );
       }
+      if (title === null) return;
       if (type === 'project') {
         project.addProject(title);
         this.renderButtonList(projects);
