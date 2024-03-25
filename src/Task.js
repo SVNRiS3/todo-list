@@ -10,6 +10,7 @@ export default class Task {
   tags = [];
   notes;
   type = 'task';
+  active = 0;
 
   constructor(title) {
     this.title = title;

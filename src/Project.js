@@ -4,6 +4,7 @@ export default class Project {
   #id = Math.floor(Date.now() * (Math.random() + 1));
   taskList = [];
   type = 'project';
+  active = 0;
 
   constructor(title) {
     this.title = title;

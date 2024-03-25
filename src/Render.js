@@ -1,5 +1,4 @@
 import ProjectHandler from './ProjectHandler';
-//TODO: active class disappears after adding/removing project (so on render), add state elsewhere
 const project = new ProjectHandler();
 
 project.addProject('test project');
@@ -41,25 +40,37 @@ export default class Render {
     document
       .querySelectorAll(`.${type}-active`)
       .forEach((el) => el.classList.remove(`${type}-active`));
+    if (type === 'project') projects.forEach((project) => (project.active = 0));
+    else if (type === 'task')
+      projects.forEach((project) =>
+        project.forEach((task) => (task.active = 0))
+      );
+  }
+
+  addActiveClass(element, item) {
+    element.classList.add(`${item.type}-active`);
+    item.active = 1;
   }
 
   addProjectListener(element, item) {
     element.addEventListener('click', () => {
       this.removeActiveClass(item.type);
-      element.classList.add(`${item.type}-active`);
+      this.addActiveClass(element, item);
       if (item.type === 'project') this.renderProjectTasks(item);
       else this.renderTaskEdit(item);
     });
   }
 
   setDefaultActiveProject() {
-    let activeProjects = document.querySelectorAll('.project-active');
+    let activeProjects = projects.filter((project) => project.active === 1);
     const renderedProjects = document.querySelectorAll('.project');
     if (activeProjects.length === 0 && renderedProjects.length > 0) {
-      renderedProjects[0].classList.add('project-active');
+      this.addActiveClass(renderedProjects[0], projects[0]);
     }
-    activeProjects = document.querySelectorAll('.project-active');
-    this.projectName.textContent = activeProjects[0].textContent;
+    let activeClassProjects = document.querySelectorAll('.project-active');
+    this.projectName.textContent = activeClassProjects[0]
+      ? activeClassProjects[0].textContent
+      : 'Create your first project.';
   }
 
   addRemoveElementListener(type, button) {
@@ -132,6 +143,7 @@ export default class Render {
       let itemId = item.getId();
       let elWrapper = this.create('div', `${listType}-el-wrapper`, '', itemId);
       let button = this.create('button', listType, item.title, itemId);
+      if (item.active === 1) this.addActiveClass(button, item);
       this.addProjectListener(button, item);
       let removeItemEl = this.create(
         'button',
