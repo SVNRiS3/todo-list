@@ -11,6 +11,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Todo',
+      template: 'src/index.html',
     }),
   ],
   output: {
@@ -23,6 +24,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+      },
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
